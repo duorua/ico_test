@@ -119,7 +119,7 @@ jobs:
           curl -L https://github.com/electron/rcedit/releases/download/v2.0.0/rcedit-x64.exe -o rcedit.exe
 
           # 修改 exe 图标
-          ./rcedit.exe "MFA/MFAAvalonia.exe" --set-icon --set-icon "docs/imgs/logo.ico"
+          ./rcedit.exe "MFA/MFAAvalonia.exe" --set-icon "docs/imgs/logo.ico"
 
       - name: Clean up MFAAvalonia archive
         if: matrix.os != 'android'
