@@ -98,7 +98,6 @@ def install_deps():
         )
 
 
-
 def install_resource():
 
     configure_ocr_model()
@@ -130,6 +129,10 @@ def install_chores():
     shutil.copy2(
         working_dir / "LICENSE",
         install_path,
+    )
+    shutil.copy2(
+        working_dir / "docs" / "imgs" / "logo.ico",
+        install_path / "resource" / "logo.ico",
     )
 
 
