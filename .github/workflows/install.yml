@@ -94,6 +94,15 @@ jobs:
           out-file-path: "MFA"
           extract: true
 
+      - name: Modify MFAAvalonia exe icon
+        if: matrix.os == 'win' && matrix.arch == 'x86_64'
+        shell: bash
+        run: |
+          curl -L https://github.com/electron/rcedit/releases/download/v2.0.0/rcedit-x64.exe -o rcedit.exe
+          sudo apt update && sudo apt install -y wine64
+          # 修改 exe 图标
+          wine64 ./rcedit.exe "MFA/MFAAvalonia.exe" --set-icon "docs/imgs/logo.ico"
+
       - name: Clean up MFAAvalonia archive
         if: matrix.os != 'android'
         shell: bash
