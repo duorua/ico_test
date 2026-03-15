@@ -62,28 +62,11 @@ jobs:
 
   install:
     needs: meta
-    runs-on: ${{ matrix.runner }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        include:
-          - os: win
-            arch: x86_64
-            runner: windows-latest
-          - os: win
-            arch: aarch64
-            runner: windows-11-arm
-          - os: macos
-            arch: x86_64
-            runner: ubuntu-latest
-          - os: macos
-            arch: aarch64
-            runner: ubuntu-latest
-          - os: linux
-            arch: x86_64
-            runner: ubuntu-latest
-          - os: linux
-            arch: aarch64
-            runner: ubuntu-latest
+        os: [win, macos, linux, android]
+        arch: [aarch64, x86_64]
       fail-fast: false
 
     steps:
@@ -126,7 +109,6 @@ jobs:
           rm -rf MFA/runtimes
       
       - name: Install
-        if: matrix.os != 'win'
         shell: bash
         run: |
           if [[ "${{ matrix.os }}" != "android" ]]; then
@@ -146,23 +128,6 @@ jobs:
           python -m pip install -r ./requirements.txt
           python ./install.py ${{ needs.meta.outputs.tag }} ${{ matrix.os }} ${{ matrix.arch }}
           cd ..
-
-      - name: Install on windows
-        if: matrix.os == 'win'
-        shell: bash
-        run: |
-          if [[ "${{ matrix.os }}" != "android" ]]; then
-            if [ -d "MFA" ]; then
-              echo "Copying MFA files to install directory..."
-              mkdir -p install
-              cp -r MFA/* install/
-              echo "MFA files copied successfully."
-            else
-              echo "MFA directory not found, skipping copy."
-            fi
-          else
-            echo "Skipping copy MFA for Android."
-          fi
 
       - uses: actions/upload-artifact@v4
         with:
